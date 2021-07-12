@@ -4,6 +4,7 @@ plugins {
     id("com.github.johnrengelman.shadow") version "7.0.0"
     id("io.micronaut.application") version "1.5.3"
     id("org.jetbrains.kotlin.plugin.allopen") version "1.4.32"
+    id("org.jetbrains.kotlin.plugin.noarg") version "1.4.32"
     id("org.jetbrains.kotlin.plugin.jpa") version "1.4.32"
     id("com.google.protobuf") version "0.8.15"
 }
@@ -16,6 +17,7 @@ repositories {
 }
 
 micronaut {
+    runtime "netty"
     testRuntime("junit5")
     processing {
         incremental(true)
@@ -39,11 +41,16 @@ dependencies {
     testImplementation("org.testcontainers:mysql")
     testImplementation("org.testcontainers:testcontainers")
     implementation("io.micronaut:micronaut-validation")
+    implementation("io.micronaut:micronaut-http-client")
 
     runtimeOnly("com.fasterxml.jackson.module:jackson-module-kotlin")
 
     testImplementation("io.micronaut:micronaut-http-client")
 
+}
+
+allOpen {
+    annotation("io.micronaut.http.client.annotation.Client")
 }
 
 

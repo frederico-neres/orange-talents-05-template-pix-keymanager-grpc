@@ -7,6 +7,6 @@ fun RegistrarChavePixRequest.paraNovaChavePix(): NovaChavePix {
         clienteId = this.clienteId,
         tipo = TipoChavePix.valueOf(this.tipo!!.name),
         chave = this.chave,
-        conta = TipoConta.valueOf(this.conta!!.name)
+        tipoConta = TipoConta.valueOf(this.conta!!.name)
     )
 }

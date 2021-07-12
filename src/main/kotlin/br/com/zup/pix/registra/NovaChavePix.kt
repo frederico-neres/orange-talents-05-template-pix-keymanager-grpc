@@ -10,14 +10,14 @@ class NovaChavePix(
     @field:NotBlank val clienteId: String,
     @field:NotNull val tipo: TipoChavePix,
     @field:NotBlank @field:Size(max = 77) val chave: String,
-    @field:NotNull val conta: TipoConta,
+    @field:NotNull val tipoConta: TipoConta,
 ) {
     fun paraChavePix(conta: Conta): ChavePix {
         return ChavePix(
             clienteId = this.clienteId,
             tipo = this.tipo,
             chave = this.chave,
-            tipoConta = this.conta,
+            tipoConta = this.tipoConta,
             conta = conta
         )
     }
