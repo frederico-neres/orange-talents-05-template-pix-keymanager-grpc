@@ -6,6 +6,7 @@ import br.com.zup.RegistrarChavePixResponse
 import io.grpc.stub.StreamObserver
 import javax.inject.Singleton
 
+@ExceptionAdvice
 @Singleton
 class RegistraChavePixEndpoint(private val service: RegistraChavePixService): KeyManagerGrpcServiceGrpc.KeyManagerGrpcServiceImplBase() {
 

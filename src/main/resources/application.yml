@@ -1,10 +1,6 @@
 micronaut:
   application:
     name: key_manager_grpc
-  codec:
-    json:
-      additionalTypes:
-        - text/javascript
 
 datasources:
   default:
@@ -16,6 +12,5 @@ datasources:
     dialect: MYSQL
 jpa.default.properties.hibernate.hbm2ddl.auto: create-drop
 
-itau:
-  contas:
-    url: ${itau_contas_url:http://localhost:9091}
+#itau.contas.url: ${itau_contas_url:´http://localhost:9091´}
+itau.contas.url: http://localhost:9091
