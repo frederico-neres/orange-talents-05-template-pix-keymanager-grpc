@@ -1,10 +1,12 @@
 package br.com.zup.pix.registra
 
+import br.com.zup.pix.validator.ValidaChavePix
 import io.micronaut.core.annotation.Introspected
 import javax.validation.constraints.NotBlank
 import javax.validation.constraints.NotNull
 import javax.validation.constraints.Size
 
+@ValidaChavePix
 @Introspected
 class NovaChavePix(
     @field:NotBlank val clienteId: String,

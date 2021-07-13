@@ -23,6 +23,9 @@ class ExceptionAdviceInterceptor: MethodInterceptor<Any, Any> {
                 is ConstraintViolationException -> Status.INVALID_ARGUMENT
                     .withCause(ex)
                     .withDescription(ex.message)
+                is AlreadyExistsException -> Status.ALREADY_EXISTS
+                    .withCause(ex)
+                    .withDescription(ex.message)
                 else -> Status.UNKNOWN
                     .withCause(ex)
                     .withDescription("Ocorreu um erro desconhecido" )
