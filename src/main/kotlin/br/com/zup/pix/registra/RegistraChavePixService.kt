@@ -4,13 +4,12 @@ import io.micronaut.validation.Validated
 import java.lang.IllegalStateException
 import javax.inject.Singleton
 import javax.transaction.Transactional
-import javax.validation.ConstraintViolationException
 import javax.validation.Valid
 
 @Validated
 @Singleton
 class RegistraChavePixService(
-    private val contaClient: ContaClient,
+    private val contaClient: ItauClient,
     private val chavePixRepository: ChavePixRepository) {
 
     @Transactional

@@ -22,6 +22,9 @@ class ExceptionAdviceInterceptor: MethodInterceptor<Any, Any> {
             val status = when(ex) {
                 is ConstraintViolationException -> Status.INVALID_ARGUMENT
                     .withCause(ex)
+                    .withDescription("Chave pix inválida")
+                is IllegalStateException -> Status.FAILED_PRECONDITION
+                    .withCause(ex)
                     .withDescription(ex.message)
                 is AlreadyExistsException -> Status.ALREADY_EXISTS
                     .withCause(ex)
