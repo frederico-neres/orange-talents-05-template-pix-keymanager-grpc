@@ -52,7 +52,7 @@ dependencies {
 }
 
 allOpen {
-    annotation("io.micronaut.http.client.annotation.Client")
+    annotation("javax.persistence.Entity")
 }
 
 

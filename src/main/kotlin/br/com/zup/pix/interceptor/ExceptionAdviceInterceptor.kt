@@ -1,5 +1,7 @@
-package br.com.zup.pix.registra
+package br.com.zup.pix.interceptor
 
+import br.com.zup.pix.exception.AlreadyExistsException
+import br.com.zup.pix.exception.NotFoundException
 import io.grpc.Status
 import io.grpc.stub.StreamObserver
 import io.micronaut.aop.InterceptorBean
@@ -22,11 +24,14 @@ class ExceptionAdviceInterceptor: MethodInterceptor<Any, Any> {
             val status = when(ex) {
                 is ConstraintViolationException -> Status.INVALID_ARGUMENT
                     .withCause(ex)
-                    .withDescription("Chave pix inválida")
+                    .withDescription(ex.message)
                 is IllegalStateException -> Status.FAILED_PRECONDITION
                     .withCause(ex)
                     .withDescription(ex.message)
                 is AlreadyExistsException -> Status.ALREADY_EXISTS
+                    .withCause(ex)
+                    .withDescription(ex.message)
+                is NotFoundException -> Status.NOT_FOUND
                     .withCause(ex)
                     .withDescription(ex.message)
                 else -> Status.UNKNOWN

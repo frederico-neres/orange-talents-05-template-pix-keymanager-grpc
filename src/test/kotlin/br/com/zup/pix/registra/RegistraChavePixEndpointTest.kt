@@ -116,14 +116,14 @@ internal class RegistraChavePixEndpointTest(
     fun `NAO deve cadastrar chave quando parametros invalidos`() {
 
         val request =  RegistrarChavePixRequest.newBuilder().build()
-        
+
         val error = assertThrows<StatusRuntimeException> {
             clientGrpc.registra(request)
         }
 
         with(error) {
             assertEquals(Status.INVALID_ARGUMENT.code, status.code)
-            assertEquals("Chave pix inválida", status.description)
+            assertTrue(status.description?.contains("Chave pix inválida") ?: false)
         }
     }
 

@@ -3,6 +3,7 @@ package br.com.zup.pix.registra
 import br.com.zup.KeyManagerGrpcServiceGrpc
 import br.com.zup.RegistrarChavePixRequest
 import br.com.zup.RegistrarChavePixResponse
+import br.com.zup.pix.interceptor.ExceptionAdvice
 import io.grpc.stub.StreamObserver
 import javax.inject.Singleton
 

@@ -1,5 +1,6 @@
 package br.com.zup.pix.registra
 
+import br.com.zup.pix.exception.AlreadyExistsException
 import io.micronaut.validation.Validated
 import java.lang.IllegalStateException
 import javax.inject.Singleton

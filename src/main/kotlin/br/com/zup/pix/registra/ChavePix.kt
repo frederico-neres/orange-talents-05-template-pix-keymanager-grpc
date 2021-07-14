@@ -1,6 +1,7 @@
 package br.com.zup.pix.registra
 
 import java.util.*
+import javax.persistence.Column
 import javax.persistence.Embedded
 import javax.persistence.Entity
 import javax.persistence.Id
@@ -18,5 +19,6 @@ class ChavePix(
 ) {
 
     @Id
+    @Column(length = 16)
     var id: UUID = UUID.randomUUID()
 }
