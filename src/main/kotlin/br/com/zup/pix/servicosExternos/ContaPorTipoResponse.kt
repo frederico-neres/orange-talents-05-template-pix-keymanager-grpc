@@ -1,5 +1,6 @@
 package br.com.zup.pix.servicosExternos
 
+import br.com.zup.Instituicoes
 import br.com.zup.pix.registra.Conta
 
 class ContaPorTipoResponse(
@@ -10,11 +11,11 @@ class ContaPorTipoResponse(
 
     fun paraConta(): Conta {
         return Conta(
+            instituicao = Instituicoes.nome(Conta.ITAU_UNIBANCO_ISPB),
             agencia = this.agencia,
             numero = this.numero,
             titularNome = this.titular.nome,
             titularCpf = this.titular.cpf,
-
         )
     }
 }

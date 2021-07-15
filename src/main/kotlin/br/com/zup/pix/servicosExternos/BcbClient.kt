@@ -1,14 +1,14 @@
 package br.com.zup.pix.servicosExternos
 
+import br.com.zup.Instituicoes
+import br.com.zup.pix.consulta.ChavePixInfo
 import br.com.zup.pix.registra.ChavePix
 import br.com.zup.pix.registra.Conta
+import br.com.zup.pix.registra.TipoConta
 import io.micronaut.core.annotation.Introspected
 import io.micronaut.http.HttpResponse
 import io.micronaut.http.MediaType
-import io.micronaut.http.annotation.Body
-import io.micronaut.http.annotation.Delete
-import io.micronaut.http.annotation.PathVariable
-import io.micronaut.http.annotation.Post
+import io.micronaut.http.annotation.*
 import io.micronaut.http.client.annotation.Client
 import java.time.LocalDateTime
 
@@ -27,6 +27,9 @@ interface BcbClient {
     )
     fun delete(@PathVariable key: String, @Body request: RemoveChavePixRequest): HttpResponse<RemoveChavePixResponse>
 
+    @Get("/api/v1/pix/keys/{key}",
+        consumes = [MediaType.APPLICATION_XML])
+    fun findByKey(@PathVariable key: String): HttpResponse<ConsultaChavePixResponse>
 }
 
 
@@ -80,6 +83,35 @@ data class RemoveChavePixResponse (
     val participant: String,
     val deletedAt: LocalDateTime
 )
+
+data class ConsultaChavePixResponse(
+    val keyType: KeyType,
+    val key: String,
+    val bankAccount: BankAccount,
+    val owner: Owner,
+    val createdAt: LocalDateTime
+)
+{
+    fun toModel(): ChavePixInfo {
+        return ChavePixInfo(
+            tipoDeChave = keyType.toTipoChavePix(),
+            chave = this.key,
+            tipoDeConta = when(this.bankAccount.accountType) {
+                AccountType.CACC -> TipoConta.CONTA_CORRENTE
+                AccountType.SVGS -> TipoConta.CONTA_POUPANCA
+                else -> TipoConta.UNKNOWN_CONTA
+            },
+            conta = Conta(
+                instituicao = Instituicoes.nome(bankAccount.participant),
+                titularNome = owner.name,
+                titularCpf = owner.taxIdNumber,
+                agencia = bankAccount.branch,
+                numero = bankAccount.accountNumber
+            )
+
+        )
+    }
+}
 
 data class BankAccount(
     val participant: String,

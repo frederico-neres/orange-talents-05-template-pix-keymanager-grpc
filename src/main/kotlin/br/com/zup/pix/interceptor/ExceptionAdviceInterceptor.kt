@@ -1,6 +1,7 @@
 package br.com.zup.pix.interceptor
 
 import br.com.zup.pix.exception.AlreadyExistsException
+import br.com.zup.pix.exception.ChavePixNaoEncontradaException
 import br.com.zup.pix.exception.NotFoundException
 import io.grpc.Status
 import io.grpc.stub.StreamObserver
@@ -32,6 +33,9 @@ class ExceptionAdviceInterceptor: MethodInterceptor<Any, Any> {
                     .withCause(ex)
                     .withDescription(ex.message)
                 is NotFoundException -> Status.NOT_FOUND
+                    .withCause(ex)
+                    .withDescription(ex.message)
+                is ChavePixNaoEncontradaException -> Status.NOT_FOUND
                     .withCause(ex)
                     .withDescription(ex.message)
                 else -> Status.UNKNOWN

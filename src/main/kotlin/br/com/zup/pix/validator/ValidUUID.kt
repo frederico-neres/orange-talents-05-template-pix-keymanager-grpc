@@ -13,7 +13,7 @@ import kotlin.reflect.KClass
 
 @Documented
 @Constraint(validatedBy = [ValidUUIDValidator::class])
-@Target(AnnotationTarget.VALUE_PARAMETER)
+@Target(AnnotationTarget.VALUE_PARAMETER, AnnotationTarget.FIELD)
 @Retention(RUNTIME)
 annotation class ValidUUID(
     val message: kotlin.String = "UUID Inválido",

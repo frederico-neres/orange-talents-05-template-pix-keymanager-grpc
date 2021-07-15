@@ -1,5 +1,6 @@
 package br.com.zup.pix.registra
 
+import java.time.LocalDateTime
 import java.util.*
 import javax.persistence.Column
 import javax.persistence.Embedded
@@ -17,11 +18,11 @@ class ChavePix(
     @field:NotNull val tipoConta: TipoConta,
     @field:NotNull @field:Embedded val conta: Conta,
 ) {
-    fun atualiza(chave: String) {
-        this.chave = chave
-    }
 
     @Id
     @Column(length = 16)
     var id: UUID = UUID.randomUUID()
+    val criadaEm: LocalDateTime = LocalDateTime.now()
+
+    fun atualiza(chave: String) { this.chave = chave }
 }

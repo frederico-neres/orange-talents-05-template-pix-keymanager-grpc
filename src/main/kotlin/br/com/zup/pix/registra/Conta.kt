@@ -4,6 +4,7 @@ import javax.persistence.Embeddable
 
 @Embeddable
 class Conta(
+    val instituicao: String,
     val agencia: String,
     val numero: String,
     val titularNome: String,

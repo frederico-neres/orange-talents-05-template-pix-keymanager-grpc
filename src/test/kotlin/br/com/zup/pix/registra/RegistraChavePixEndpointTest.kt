@@ -1,9 +1,6 @@
 package br.com.zup.pix.registra
 
-import br.com.zup.KeyManagerGrpcServiceGrpc
-import br.com.zup.RegistrarChavePixRequest
-import br.com.zup.TipoChavePix
-import br.com.zup.TipoConta
+import br.com.zup.*
 import br.com.zup.pix.servicosExternos.*
 import io.grpc.ManagedChannel
 import io.grpc.Status
@@ -70,7 +67,8 @@ internal class RegistraChavePixEndpointTest(
                 agencia = "0001",
                 numero = "291900",
                 titularNome = "Fred",
-                titularCpf = request.chave
+                titularCpf = request.chave,
+                instituicao = Instituicoes.nome(Conta.ITAU_UNIBANCO_ISPB)
             )
         )
 
