@@ -26,6 +26,9 @@ class ExceptionAdviceInterceptor: MethodInterceptor<Any, Any> {
                 is ConstraintViolationException -> Status.INVALID_ARGUMENT
                     .withCause(ex)
                     .withDescription(ex.message)
+                is IllegalArgumentException -> Status.INVALID_ARGUMENT
+                    .withCause(ex)
+                    .withDescription(ex.message)
                 is IllegalStateException -> Status.FAILED_PRECONDITION
                     .withCause(ex)
                     .withDescription(ex.message)
