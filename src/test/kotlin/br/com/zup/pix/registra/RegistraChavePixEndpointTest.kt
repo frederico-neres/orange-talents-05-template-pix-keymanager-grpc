@@ -3,8 +3,9 @@ package br.com.zup.pix.registra
 import br.com.zup.*
 import br.com.zup.TipoChavePix
 import br.com.zup.TipoConta
-import br.com.zup.pix.registra.TipoChavePix as TipoChavePixEntity
-import br.com.zup.pix.registra.TipoConta as TipoContaEntity
+import br.com.zup.pix.servicosExternos.ContaPorTipoResponse
+import br.com.zup.pix.servicosExternos.ItauClient
+import br.com.zup.pix.servicosExternos.Titular
 import io.grpc.ManagedChannel
 import io.grpc.Status
 import io.grpc.StatusRuntimeException
@@ -21,6 +22,8 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.mockito.Mockito
+import br.com.zup.pix.registra.TipoChavePix as TipoChavePixEntity
+import br.com.zup.pix.registra.TipoConta as TipoContaEntity
 
 
 @MicronautTest(transactional = false)

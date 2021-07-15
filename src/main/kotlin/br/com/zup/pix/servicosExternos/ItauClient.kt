@@ -1,4 +1,4 @@
-package br.com.zup.pix.registra
+package br.com.zup.pix.servicosExternos
 
 import io.micronaut.http.HttpResponse
 import io.micronaut.http.annotation.Get

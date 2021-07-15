@@ -3,23 +3,28 @@ package br.com.zup.pix.remove
 import br.com.zup.KeyManagerRemoveGrpcServiceGrpc
 import br.com.zup.RemoveChavePixRequest
 import br.com.zup.RemoveChavePixResponse
+import br.com.zup.pix.servicosExternos.RemoveChavePixRequest as BcbRemoveChavePixRequest
 import br.com.zup.pix.exception.NotFoundException
 import br.com.zup.pix.interceptor.ExceptionAdvice
 import br.com.zup.pix.registra.ChavePixRepository
+import br.com.zup.pix.servicosExternos.BcbClient
 import br.com.zup.pix.validator.ValidUUID
 import io.grpc.stub.StreamObserver
 import io.micronaut.validation.Validated
 import java.util.*
 import javax.inject.Singleton
+import javax.transaction.Transactional
 import javax.validation.constraints.NotBlank
 
 @ExceptionAdvice
 @Validated
 @Singleton
 class RemoveChavePixEndpoint(
-    val chavePixRepository: ChavePixRepository
+    private val chavePixRepository: ChavePixRepository,
+    private val bcbClient: BcbClient
 ): KeyManagerRemoveGrpcServiceGrpc.KeyManagerRemoveGrpcServiceImplBase() {
 
+    @Transactional
     override fun remove(request: RemoveChavePixRequest, responseObserver: StreamObserver<RemoveChavePixResponse>) {
 
         val (id, clienteId) = validatedParameters(request.pixID, request.clienteId)
@@ -31,6 +36,14 @@ class RemoveChavePixEndpoint(
 
         val chavePixExistente = OptionalChavePixExistente.get()
         chavePixRepository.deleteById(chavePixExistente.id)
+
+        val request = BcbRemoveChavePixRequest(chavePixExistente.chave)
+
+        try {
+            bcbClient.delete(key = chavePixExistente.chave, request = request)
+        }catch (ex: Exception) {
+            throw IllegalStateException("Erro ao remover chave Pix no Banco Central do Brasil (BCB)")
+        }
 
         responseObserver.onNext(RemoveChavePixResponse.newBuilder()
             .setPixID(chavePixExistente.id.toString())

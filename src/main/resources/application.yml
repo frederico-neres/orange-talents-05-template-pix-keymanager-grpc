@@ -12,5 +12,5 @@ datasources:
     dialect: MYSQL
 jpa.default.properties.hibernate.hbm2ddl.auto: create-drop
 
-#itau.contas.url: ${itau_contas_url:´http://localhost:9091´}
 itau.contas.url: http://localhost:9091
+bcb.pix.url: http://localhost:8082

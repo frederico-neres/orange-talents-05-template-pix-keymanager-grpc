@@ -1,8 +1,12 @@
 package br.com.zup.pix.registra
 
 import br.com.zup.pix.exception.AlreadyExistsException
+import br.com.zup.pix.servicosExternos.BcbClient
+import br.com.zup.pix.servicosExternos.CadastraChavePixRequest
+import br.com.zup.pix.servicosExternos.CadastraChavePixResponse
+import br.com.zup.pix.servicosExternos.ItauClient
+import io.micronaut.http.HttpResponse
 import io.micronaut.validation.Validated
-import java.lang.IllegalStateException
 import javax.inject.Singleton
 import javax.transaction.Transactional
 import javax.validation.Valid
@@ -11,7 +15,8 @@ import javax.validation.Valid
 @Singleton
 class RegistraChavePixService(
     private val contaClient: ItauClient,
-    private val chavePixRepository: ChavePixRepository) {
+    private val chavePixRepository: ChavePixRepository,
+    private val bcbClient: BcbClient) {
 
     @Transactional
     fun registra(@Valid novaChavePix: NovaChavePix): ChavePix {
@@ -27,7 +32,19 @@ class RegistraChavePixService(
         val conta = contaPorTipoResponse?.body()?.paraConta() ?: throw IllegalStateException("Cliente não encontrado")
         val chavePix = novaChavePix.paraChavePix(conta)
 
-        return chavePixRepository.save(chavePix)
+        chavePixRepository.save(chavePix)
+
+        val cadastraChavePixRequest = CadastraChavePixRequest.of(chavePix)
+
+        var bcbClientResponse: HttpResponse<CadastraChavePixResponse>
+        try {
+            bcbClientResponse = bcbClient.create(cadastraChavePixRequest)
+        } catch (ex: Exception) {
+            throw IllegalStateException("Erro ao registrar chave Pix no Banco Central do Brasil (BCB)")
+        }
+
+        chavePix.atualiza(bcbClientResponse.body()!!.key)
+        return chavePix
     }
 
 }

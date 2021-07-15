@@ -13,10 +13,13 @@ import javax.validation.constraints.Size
 class ChavePix(
     @field:NotBlank val clienteId: String,
     @field:NotNull val tipo: TipoChavePix,
-    @field:NotBlank @field:Size(max = 77) val chave: String,
+    @field:NotBlank @field:Size(max = 77) var chave: String,
     @field:NotNull val tipoConta: TipoConta,
     @field:NotNull @field:Embedded val conta: Conta,
 ) {
+    fun atualiza(chave: String) {
+        this.chave = chave
+    }
 
     @Id
     @Column(length = 16)

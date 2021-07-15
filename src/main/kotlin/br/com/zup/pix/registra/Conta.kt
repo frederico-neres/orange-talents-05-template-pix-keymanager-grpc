@@ -8,4 +8,8 @@ class Conta(
     val numero: String,
     val titularNome: String,
     val titularCpf: String,
-)
+) {
+    companion object {
+        val ITAU_UNIBANCO_ISPB: String = "60701190"
+    }
+}
