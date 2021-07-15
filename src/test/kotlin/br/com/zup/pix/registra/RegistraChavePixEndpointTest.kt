@@ -1,11 +1,10 @@
 package br.com.zup.pix.registra
 
-import br.com.zup.*
+import br.com.zup.KeyManagerGrpcServiceGrpc
+import br.com.zup.RegistrarChavePixRequest
 import br.com.zup.TipoChavePix
 import br.com.zup.TipoConta
-import br.com.zup.pix.servicosExternos.ContaPorTipoResponse
-import br.com.zup.pix.servicosExternos.ItauClient
-import br.com.zup.pix.servicosExternos.Titular
+import br.com.zup.pix.servicosExternos.*
 import io.grpc.ManagedChannel
 import io.grpc.Status
 import io.grpc.StatusRuntimeException
@@ -22,6 +21,8 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.mockito.Mockito
+import java.time.LocalDateTime
+import javax.inject.Inject
 import br.com.zup.pix.registra.TipoChavePix as TipoChavePixEntity
 import br.com.zup.pix.registra.TipoConta as TipoContaEntity
 
@@ -30,9 +31,10 @@ import br.com.zup.pix.registra.TipoConta as TipoContaEntity
 internal class RegistraChavePixEndpointTest(
     val chavePixRepository: ChavePixRepository,
     val clientGrpc: KeyManagerGrpcServiceGrpc.KeyManagerGrpcServiceBlockingStub,
-    val itauClient: ItauClient
+    val itauClient: ItauClient,
 ) {
-
+    @field:Inject
+    lateinit var bcbClient: BcbClient
 
     @BeforeEach
     internal fun setUp() {
@@ -55,11 +57,6 @@ internal class RegistraChavePixEndpointTest(
     }
 
     @Test
-    internal fun `DEVE registrar chave pix ALEATORIA`() {
-        templateDeveRegistrarChavePix("", TipoChavePix.CHAVE_ALEATORIA)
-    }
-
-    @Test
     internal fun `NAO deve registrar chave pix se ja existir uma igual`() {
 
         val request = getRequest("97383289935", TipoChavePix.CPF)
@@ -79,11 +76,12 @@ internal class RegistraChavePixEndpointTest(
 
         chavePixRepository.save(chavePix)
 
-
         Mockito.`when`(itauClient
             .buscarContaPorTipo(request.clienteId, request.conta.name))
             .thenReturn(dadosDaResponse())
 
+        Mockito.`when`(bcbClient.create(cadastraChavePixRequest(request.chave, KeyType.CPF)))
+            .thenReturn(cadastraChavePixResponse(request.chave, KeyType.CPF))
 
         val error = assertThrows<StatusRuntimeException> {
            clientGrpc.registra(request)
@@ -104,6 +102,8 @@ internal class RegistraChavePixEndpointTest(
             .buscarContaPorTipo(request.clienteId, request.conta.name))
             .thenReturn(HttpResponse.notFound())
 
+        Mockito.`when`(bcbClient.create(cadastraChavePixRequest(request.chave, KeyType.CPF)))
+            .thenReturn(HttpResponse.notFound())
 
         val error = assertThrows<StatusRuntimeException> {
             clientGrpc.registra(request)
@@ -128,14 +128,43 @@ internal class RegistraChavePixEndpointTest(
             assertEquals(Status.INVALID_ARGUMENT.code, status.code)
             assertTrue(status.description?.contains("Chave pix inválida") ?: false)
         }
+
+
+    }
+
+    @Test
+    fun `NAO deve cadastrar chave Pix quando nao for possivel registrar chave no BCB`() {
+
+        val request = getRequest("97383289935", TipoChavePix.CPF)
+        Mockito.`when`(itauClient
+            .buscarContaPorTipo(request.clienteId, request.conta.name))
+            .thenReturn(dadosDaResponse())
+
+        Mockito.`when`(bcbClient.create(cadastraChavePixRequest(request.chave, KeyType.CPF)))
+            .thenReturn(HttpResponse.notFound())
+
+        val error = assertThrows<StatusRuntimeException> {
+            clientGrpc.registra(request)
+        }
+
+        with(error) {
+                assertEquals(Status.FAILED_PRECONDITION.code, status.code)
+        }
     }
 
     fun templateDeveRegistrarChavePix(chave: String, tipo: TipoChavePix) {
+
         val request = getRequest(chave, tipo)
 
         Mockito.`when`(itauClient
             .buscarContaPorTipo(request.clienteId, request.conta.name))
             .thenReturn(dadosDaResponse())
+
+        val keyType = br.com.zup.pix.registra.TipoChavePix.valueOf(tipo.name).toBbcKeyType()
+        val cadastraChavePixRequest = cadastraChavePixRequest(chave, keyType)
+
+        Mockito.`when`(bcbClient.create(cadastraChavePixRequest))
+            .thenReturn(cadastraChavePixResponse(chave, keyType))
 
         val response = clientGrpc.registra(request)
         with(response) {
@@ -163,9 +192,50 @@ internal class RegistraChavePixEndpointTest(
         )
     }
 
+
+    private fun cadastraChavePixRequest(chave: String, tipo: KeyType): CadastraChavePixRequest {
+        return CadastraChavePixRequest(
+            keyType = tipo,
+            key = chave,
+            bankAccount = bankAccount(),
+            owner = owner()
+        )
+    }
+
+private fun cadastraChavePixResponse(chave: String, tipo: KeyType): HttpResponse<CadastraChavePixResponse> {
+    return HttpResponse.created(CadastraChavePixResponse(
+        keyType = KeyType.CPF,
+        key = chave,
+        bankAccount = bankAccount(),
+        owner = owner(),
+        createdAt = LocalDateTime.now()
+    ))
+}
+    private fun bankAccount(): BankAccount {
+        return BankAccount(
+            participant = Conta.ITAU_UNIBANCO_ISPB,
+            branch = "0001",
+            accountNumber = "291900",
+            accountType = AccountType.CACC
+        )
+    }
+
+    private fun owner(): Owner {
+        return Owner(
+            type = Owner.OwnerType.NATURAL_PERSON,
+            name = "Fred",
+            taxIdNumber = "97383289935"
+        )
+    }
+
     @MockBean(ItauClient::class)
     fun `sistemaItauMock`(): ItauClient {
         return Mockito.mock(ItauClient::class.java)
+    }
+
+    @MockBean(BcbClient::class)
+    fun `bcbClientMock`(): BcbClient {
+        return Mockito.mock(BcbClient::class.java)
     }
 
     @Factory

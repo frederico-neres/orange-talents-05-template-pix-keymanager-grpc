@@ -6,6 +6,7 @@ import br.com.zup.pix.servicosExternos.CadastraChavePixRequest
 import br.com.zup.pix.servicosExternos.CadastraChavePixResponse
 import br.com.zup.pix.servicosExternos.ItauClient
 import io.micronaut.http.HttpResponse
+import io.micronaut.http.HttpStatus
 import io.micronaut.validation.Validated
 import javax.inject.Singleton
 import javax.transaction.Transactional
@@ -33,18 +34,23 @@ class RegistraChavePixService(
         val chavePix = novaChavePix.paraChavePix(conta)
 
         chavePixRepository.save(chavePix)
-
         val cadastraChavePixRequest = CadastraChavePixRequest.of(chavePix)
 
-        var bcbClientResponse: HttpResponse<CadastraChavePixResponse>
+        lateinit var bcbClientResponse: HttpResponse<CadastraChavePixResponse>
         try {
             bcbClientResponse = bcbClient.create(cadastraChavePixRequest)
+            if(bcbClientResponse.status.code != HttpStatus.CREATED.code) {
+                throwIllegalStateExceptionBcbClient()
+            }
         } catch (ex: Exception) {
-            throw IllegalStateException("Erro ao registrar chave Pix no Banco Central do Brasil (BCB)")
+            throwIllegalStateExceptionBcbClient()
         }
 
-        chavePix.atualiza(bcbClientResponse.body()!!.key)
+        chavePix.atualiza(bcbClientResponse.body().key)
         return chavePix
     }
 
+    fun throwIllegalStateExceptionBcbClient() {
+        throw IllegalStateException("Erro ao registrar chave Pix no Banco Central do Brasil (BCB)")
+    }
 }

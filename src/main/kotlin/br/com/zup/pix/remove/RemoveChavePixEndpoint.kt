@@ -10,6 +10,7 @@ import br.com.zup.pix.registra.ChavePixRepository
 import br.com.zup.pix.servicosExternos.BcbClient
 import br.com.zup.pix.validator.ValidUUID
 import io.grpc.stub.StreamObserver
+import io.micronaut.http.HttpStatus
 import io.micronaut.validation.Validated
 import java.util.*
 import javax.inject.Singleton
@@ -40,9 +41,12 @@ class RemoveChavePixEndpoint(
         val request = BcbRemoveChavePixRequest(chavePixExistente.chave)
 
         try {
-            bcbClient.delete(key = chavePixExistente.chave, request = request)
+            val bcbClientResponse = bcbClient.delete(key = chavePixExistente.chave, request = request)
+            if(bcbClientResponse.status.code != HttpStatus.OK.code) {
+                throwIllegalStateExceptionBcbClient()
+            }
         }catch (ex: Exception) {
-            throw IllegalStateException("Erro ao remover chave Pix no Banco Central do Brasil (BCB)")
+            throwIllegalStateExceptionBcbClient()
         }
 
         responseObserver.onNext(RemoveChavePixResponse.newBuilder()
@@ -61,5 +65,8 @@ class RemoveChavePixEndpoint(
         return Pair(UUID.fromString(id), clienteId)
     }
 
+    fun throwIllegalStateExceptionBcbClient() {
+        throw IllegalStateException("Erro ao remover chave Pix no Banco Central do Brasil (BCB)")
+    }
 }
 

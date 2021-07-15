@@ -31,7 +31,7 @@ interface BcbClient {
 
 
 @Introspected
-class CadastraChavePixRequest(
+data class CadastraChavePixRequest(
     val keyType: KeyType,
     val key: String,
     val bankAccount: BankAccount,
@@ -43,7 +43,7 @@ class CadastraChavePixRequest(
                 keyType = chavePix.tipo.toBbcKeyType(),
                 key = chavePix.chave,
                 bankAccount = BankAccount(
-                    participant = "String",
+                    participant = Conta.ITAU_UNIBANCO_ISPB,
                     branch = chavePix.conta.agencia,
                     accountNumber = chavePix.conta.numero,
                     accountType = chavePix.tipoConta.toBbcAccountType()
