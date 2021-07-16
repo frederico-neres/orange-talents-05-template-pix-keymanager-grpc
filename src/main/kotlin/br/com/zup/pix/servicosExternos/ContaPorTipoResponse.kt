@@ -1,7 +1,7 @@
 package br.com.zup.pix.servicosExternos
 
 import br.com.zup.Instituicoes
-import br.com.zup.pix.registra.Conta
+import br.com.zup.pix.chave.Conta
 
 class ContaPorTipoResponse(
     val agencia: String,

@@ -1,9 +1,9 @@
 package br.com.zup.pix.consulta
 
-import br.com.zup.pix.registra.ChavePix
-import br.com.zup.pix.registra.Conta
-import br.com.zup.pix.registra.TipoChavePix
-import br.com.zup.pix.registra.TipoConta
+import br.com.zup.pix.chave.ChavePix
+import br.com.zup.pix.chave.Conta
+import br.com.zup.pix.chave.TipoChavePix
+import br.com.zup.pix.chave.TipoConta
 import java.time.LocalDateTime
 import java.util.*
 

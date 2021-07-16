@@ -1,7 +1,7 @@
 package br.com.zup.pix.consulta
 
 import br.com.zup.pix.exception.ChavePixNaoEncontradaException
-import br.com.zup.pix.registra.ChavePixRepository
+import br.com.zup.pix.chave.ChavePixRepository
 import br.com.zup.pix.servicosExternos.BcbClient
 import br.com.zup.pix.validator.ValidUUID
 import io.micronaut.core.annotation.Introspected

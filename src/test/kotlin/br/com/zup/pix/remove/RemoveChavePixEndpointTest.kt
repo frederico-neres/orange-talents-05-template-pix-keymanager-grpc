@@ -3,8 +3,7 @@ package br.com.zup.pix.remove
 import br.com.zup.Instituicoes
 import br.com.zup.KeyManagerRemoveGrpcServiceGrpc
 import br.com.zup.RemoveChavePixRequest
-import br.com.zup.pix.registra.ChavePix
-import br.com.zup.pix.registra.*
+import br.com.zup.pix.chave.*
 import br.com.zup.pix.servicosExternos.RemoveChavePixRequest as BcbClientRemoveChavePixRequest
 import br.com.zup.pix.servicosExternos.BcbClient
 import br.com.zup.pix.servicosExternos.RemoveChavePixResponse

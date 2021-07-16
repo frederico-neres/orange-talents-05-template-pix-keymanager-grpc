@@ -1,4 +1,4 @@
-package br.com.zup.pix.registra
+package br.com.zup.pix.chave
 
 import br.com.zup.pix.servicosExternos.AccountType
 

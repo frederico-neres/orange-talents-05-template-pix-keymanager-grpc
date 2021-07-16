@@ -1,5 +1,8 @@
 package br.com.zup.pix.registra
 
+import br.com.zup.pix.chave.ChavePix
+import br.com.zup.pix.chave.ChavePixRepository
+import br.com.zup.pix.chave.NovaChavePix
 import br.com.zup.pix.exception.AlreadyExistsException
 import br.com.zup.pix.servicosExternos.BcbClient
 import br.com.zup.pix.servicosExternos.CadastraChavePixRequest

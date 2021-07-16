@@ -2,9 +2,9 @@ package br.com.zup.pix.servicosExternos
 
 import br.com.zup.Instituicoes
 import br.com.zup.pix.consulta.ChavePixInfo
-import br.com.zup.pix.registra.ChavePix
-import br.com.zup.pix.registra.Conta
-import br.com.zup.pix.registra.TipoConta
+import br.com.zup.pix.chave.ChavePix
+import br.com.zup.pix.chave.Conta
+import br.com.zup.pix.chave.TipoConta
 import io.micronaut.core.annotation.Introspected
 import io.micronaut.http.HttpResponse
 import io.micronaut.http.MediaType

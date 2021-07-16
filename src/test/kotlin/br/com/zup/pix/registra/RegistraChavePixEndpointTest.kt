@@ -1,6 +1,9 @@
 package br.com.zup.pix.registra
 
 import br.com.zup.*
+import br.com.zup.pix.chave.ChavePix
+import br.com.zup.pix.chave.ChavePixRepository
+import br.com.zup.pix.chave.Conta
 import br.com.zup.pix.servicosExternos.*
 import io.grpc.ManagedChannel
 import io.grpc.Status
@@ -20,8 +23,8 @@ import org.junit.jupiter.api.assertThrows
 import org.mockito.Mockito
 import java.time.LocalDateTime
 import javax.inject.Inject
-import br.com.zup.pix.registra.TipoChavePix as TipoChavePixEntity
-import br.com.zup.pix.registra.TipoConta as TipoContaEntity
+import br.com.zup.pix.chave.TipoChavePix as TipoChavePixEntity
+import br.com.zup.pix.chave.TipoConta as TipoContaEntity
 
 
 @MicronautTest(transactional = false)
@@ -158,7 +161,7 @@ internal class RegistraChavePixEndpointTest(
             .buscarContaPorTipo(request.clienteId, request.conta.name))
             .thenReturn(dadosDaResponse())
 
-        val keyType = br.com.zup.pix.registra.TipoChavePix.valueOf(tipo.name).toBbcKeyType()
+        val keyType = br.com.zup.pix.chave.TipoChavePix.valueOf(tipo.name).toBbcKeyType()
         val cadastraChavePixRequest = cadastraChavePixRequest(chave, keyType)
 
         Mockito.`when`(bcbClient.create(cadastraChavePixRequest))

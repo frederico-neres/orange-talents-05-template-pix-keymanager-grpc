@@ -6,7 +6,7 @@ import br.com.zup.RemoveChavePixResponse
 import br.com.zup.pix.servicosExternos.RemoveChavePixRequest as BcbRemoveChavePixRequest
 import br.com.zup.pix.exception.NotFoundException
 import br.com.zup.pix.interceptor.ExceptionAdvice
-import br.com.zup.pix.registra.ChavePixRepository
+import br.com.zup.pix.chave.ChavePixRepository
 import br.com.zup.pix.servicosExternos.BcbClient
 import br.com.zup.pix.validator.ValidUUID
 import io.grpc.stub.StreamObserver

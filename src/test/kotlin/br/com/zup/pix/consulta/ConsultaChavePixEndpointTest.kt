@@ -2,7 +2,7 @@ package br.com.zup.pix.consulta
 
 import br.com.zup.ConsultaChavePixRequest
 import br.com.zup.KeyManagerConsultaGrpcServiceGrpc
-import br.com.zup.pix.registra.*
+import br.com.zup.pix.chave.*
 import br.com.zup.pix.servicosExternos.*
 import br.com.zup.pix.servicosExternos.ConsultaChavePixResponse
 import io.grpc.ManagedChannel

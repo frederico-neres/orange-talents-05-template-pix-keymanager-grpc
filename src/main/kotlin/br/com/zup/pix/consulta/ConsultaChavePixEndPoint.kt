@@ -2,7 +2,7 @@ package br.com.zup.pix.consulta
 
 import br.com.zup.*
 import br.com.zup.ConsultaChavePixResponse
-import br.com.zup.pix.registra.ChavePixRepository
+import br.com.zup.pix.chave.ChavePixRepository
 import br.com.zup.pix.interceptor.ExceptionAdvice
 import br.com.zup.pix.registra.toModel
 import br.com.zup.pix.servicosExternos.BcbClient

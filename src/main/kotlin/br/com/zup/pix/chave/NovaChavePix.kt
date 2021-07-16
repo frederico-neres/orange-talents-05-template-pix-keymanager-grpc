@@ -1,5 +1,9 @@
-package br.com.zup.pix.registra
+package br.com.zup.pix.chave
 
+import br.com.zup.pix.chave.ChavePix
+import br.com.zup.pix.chave.Conta
+import br.com.zup.pix.chave.TipoChavePix
+import br.com.zup.pix.chave.TipoConta
 import br.com.zup.pix.validator.ValidaChavePix
 import io.micronaut.core.annotation.Introspected
 import javax.validation.constraints.NotBlank

@@ -1,5 +1,6 @@
-package br.com.zup.pix.registra
+package br.com.zup.pix.chave
 
+import br.com.zup.pix.chave.ChavePix
 import io.micronaut.data.annotation.Repository
 import io.micronaut.data.jpa.repository.JpaRepository
 import java.util.*

@@ -4,7 +4,7 @@ import br.com.zup.ConsultaChavePixResponse
 import br.com.zup.Instituicoes
 import br.com.zup.TipoChavePix
 import br.com.zup.TipoConta
-import br.com.zup.pix.registra.Conta
+import br.com.zup.pix.chave.Conta
 import com.google.protobuf.Timestamp
 import java.time.ZoneId
 

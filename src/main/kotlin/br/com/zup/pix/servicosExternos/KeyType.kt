@@ -1,6 +1,6 @@
 package br.com.zup.pix.servicosExternos
 
-import br.com.zup.pix.registra.TipoChavePix
+import br.com.zup.pix.chave.TipoChavePix
 
 enum class KeyType {
     CPF {

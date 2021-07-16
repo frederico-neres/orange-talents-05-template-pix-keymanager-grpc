@@ -3,6 +3,9 @@ package br.com.zup.pix.registra
 import br.com.zup.ConsultaChavePixRequest
 import br.com.zup.ConsultaChavePixRequest.FiltroCase.*
 import br.com.zup.RegistrarChavePixRequest
+import br.com.zup.pix.chave.NovaChavePix
+import br.com.zup.pix.chave.TipoChavePix
+import br.com.zup.pix.chave.TipoConta
 import br.com.zup.pix.consulta.Filtro
 import java.util.*
 import javax.validation.ConstraintViolationException

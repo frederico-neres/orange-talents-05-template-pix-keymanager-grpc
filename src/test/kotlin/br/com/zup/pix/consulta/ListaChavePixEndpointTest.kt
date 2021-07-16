@@ -2,7 +2,7 @@ package br.com.zup.pix.consulta
 
 import br.com.zup.KeyManagerConsultaGrpcServiceGrpc
 import br.com.zup.ListaChavePixRequest
-import br.com.zup.pix.registra.*
+import br.com.zup.pix.chave.*
 import io.grpc.ManagedChannel
 import io.grpc.Status
 import io.grpc.StatusRuntimeException
