@@ -19,6 +19,7 @@ service KeyManagerRemoveGrpcService {
 
 service KeyManagerConsultaGrpcService {
   rpc consulta (ConsultaChavePixRequest) returns (ConsultaChavePixResponse) {}
+  rpc consultaTodas(ListaChavePixRequest) returns (ListaChavePixResponse){}
 }
 
 enum TipoChavePix {
@@ -51,7 +52,6 @@ message RemoveChavePixRequest {
   string pixID = 1;
   string clienteId = 2;
 }
-
 
 message RemoveChavePixResponse {
   string pixID = 1;
@@ -87,4 +87,23 @@ message ConsultaChavePixResponse {
   string clientId = 1;
   string pixId = 2;
   ChavePix chave = 3;
+}
+
+message ListaChavePixRequest {
+  string clientId = 1;
+}
+
+message ListaChavePixResponse {
+  message DetalhesChave {
+    string clientId = 1;
+    string  pixId = 2;
+    TipoChavePix tipoChave = 3;
+    string valorChave = 4;
+    string chave = 5;
+    TipoConta tipoConta = 6;
+    google.protobuf.Timestamp criadoEm = 7;
+
+  }
+  string clientId = 1;
+  repeated DetalhesChave chavesPix = 2;
 }
