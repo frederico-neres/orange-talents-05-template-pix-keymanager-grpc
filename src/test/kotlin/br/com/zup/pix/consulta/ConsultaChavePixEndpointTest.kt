@@ -26,7 +26,7 @@ import java.time.LocalDateTime
 import javax.inject.Singleton
 
 @MicronautTest(transactional = false)
-internal class ConsultaChavePixResponseTest(
+internal class ConsultaChavePixEndpointTest(
     val grpcClient: KeyManagerConsultaGrpcServiceGrpc.KeyManagerConsultaGrpcServiceBlockingStub,
     val chavePixRepository: ChavePixRepository
 ) {
