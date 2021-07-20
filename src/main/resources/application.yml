@@ -1,16 +1,18 @@
 micronaut:
+  server:
+    port: 8081
   application:
     name: key_manager_grpc
 
 datasources:
   default:
-    url: jdbc:mysql://localhost:3306/key_manager_grpc?serverTimezone=UTC
+    url: ${DB_URL:`jdbc:mysql://localhost:3306/key_manager_grpc?serverTimezone=UTC`}
     driverClassName: com.mysql.cj.jdbc.Driver
-    username: root
-    password: 'root'
+    username: ${DB_USERNAME:root}
+    password: ${DB_PASSWORD:root}
     schema-generate: CREATE_DROP
     dialect: MYSQL
 jpa.default.properties.hibernate.hbm2ddl.auto: create-drop
 
-itau.contas.url: http://localhost:9091
-bcb.pix.url: http://localhost:8082
+itau.contas.url: ${ITAU_CONTAS_URL:`http://localhost:9091`}
+bcb.pix.url: ${BCB.PIX.URL:`http://localhost:8082`}
