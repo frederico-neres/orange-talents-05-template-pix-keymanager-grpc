@@ -1,0 +1,5 @@
+DB_URI: string de conexão para o banco de dados
+DB_USER: usuario do banco de dados
+DB_DIALECT: dialeto do banco
+ITAU_URL: url do serviço itau
+BCB_URL: url do serviço bcb
