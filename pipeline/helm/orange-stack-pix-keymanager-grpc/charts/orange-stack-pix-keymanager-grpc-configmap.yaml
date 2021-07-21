@@ -1,5 +1,10 @@
-DB_URI: string de conexão para o banco de dados
-DB_USER: usuario do banco de dados
-DB_DIALECT: dialeto do banco
-ITAU_URL: url do serviço itau
-BCB_URL: url do serviço bcb
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: orange-stack-pix-keymanager-grpc-configmap
+data:
+  DB_URI: "{{ .Values.application.DB_URI }}"
+  DB_USER: "{{ .Values.application.DB_USER }}"
+  DB_DIALECT: "{{ .Values.application.DB_DIALECT }}"
+  ITAU_URL:  "{{ .Values.application.ITAU_URL }}"
+  BCB_URL: "{{ .Values.application.BANCO_CENTRAL_URL }}"
