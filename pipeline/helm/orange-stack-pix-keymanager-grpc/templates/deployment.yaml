@@ -45,12 +45,12 @@ spec:
             httpGet:
               path: /
               port: http
-          resources:
           envFrom:
             - configMapRef:
                 name: orange-stack-pix-keymanager-grpc-configmap
             - secretRef:
                 name: orange-stack-pix-keymanager-grpc-secrets
+          resources:
             {{- toYaml .Values.resources | nindent 12 }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
